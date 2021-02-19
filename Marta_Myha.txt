@@ -1,0 +1,37 @@
+﻿Zadanie 2
+
+SELECT 
+firstname AS "Imie",
+lastname AS "Nazwisko",
+
+SUM(customernumber) AS "Liczba zamowien"
+
+FROM employees
+    
+JOIN customers ON employees.employeenumber = customers.salesRepEmployeeNumber
+    
+GROUP BY customernumber
+
+
+Zadanie 4.
+
+a)
+SELECT products.productName, SUM(orderdetails.quantityOrdered) AS "Suma sprzedazy", YEAR(orders.orderDate) AS "Rok" from products 
+INNER JOIN orderdetails ON orderdetails.productCode = products.productCode 
+INNER JOIN orders ON orders.orderNumber = orderdetails.orderNumber
+WHERE products.productName in ("1952 Alpine Renault 1300","1968 Ford Mustang","1996 Moto Guzzi 1100i") AND orders.status = "Shipped"
+GROUP BY products.productName, YEAR(orders.orderDate)
+
+b)
+SELECT products.productName, YEAR(orders.orderDate) AS "Rok", MONTH(orders.orderDate) AS "Miesiac", (orderdetails.quantityOrdered * orderdetails.priceEach) AS "Sprzedaz" FROM products
+INNER JOIN orderdetails ON orderdetails.productCode = products.productCode
+INNER JOIN orders ON orders.orderNumber = orderdetails.orderNumber
+WHERE products.productName LIKE '%Harley%' AND orders.status = "Shipped"
+
+c)
+SELECT pl.productLine AS "Nazwa linii", COUNT(prod.productCode) AS "Ilość produkowanych produktów "
+FROM productlines pl
+INNER JOIN products prod ON pl.productLine = prod.productLine
+GROUP BY 1
+HAVING COUNT(prod.productCode) BETWEEN 11 AND 20
+
